@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I AM with Gary Cardone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Montserrat:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-iam">I AM</span>
+      <span class="logo-sub">with Gary Cardone</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#sessions">SESSIONS</a></li>
+      <li><a href="#art">ART</a></li>
+      <li><a href="#reset">RESET</a></li>
+      <li><a href="#confessions">CONFESSIONS</a></li>
+      <li><a href="#writing">WRITING</a></li>
+      <li><a href="#media">MEDIA</a></li>
+      <li><a href="#about">ABOUT</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀</button>
+      <a href="#ask" class="btn-ask">ASK GARY</a>
+    </div>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#sessions">SESSIONS</a></li>
+      <li><a href="#art">ART</a></li>
+      <li><a href="#reset">RESET</a></li>
+      <li><a href="#confessions">CONFESSIONS</a></li>
+      <li><a href="#writing">WRITING</a></li>
+      <li><a href="#media">MEDIA</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#ask" class="btn-ask">ASK GARY</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="livestream-badge">
+          <span class="badge-icon">📅</span>
+          <span>Sunday Livestream · 10:30 AM ET</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="title-iam">I AM</span>
+          <span class="title-with">— with —</span>
+          <span class="title-name">Gary Cardone</span>
+          <span class="title-signature">Gary Cardone</span>
+        </h1>
+        <p class="hero-tagline">
+          Reprogram Your Mind.<br>
+          Understand Bitcoin.<br>
+          Reset Your Life.
+        </p>
+        <div class="hero-buttons">
+          <a href="#sessions" class="btn-primary">
+            <span class="btn-icon">▶</span> WATCH LATEST SESSION
+          </a>
+          <a href="#ask" class="btn-secondary">
+            <span class="btn-icon">💬</span> ASK GARY
+          </a>
+        </div>
+        <div class="hero-socials">
+          <a href="#" class="social-link">
+            <span class="social-icon">𝕏</span> X
+          </a>
+          <a href="#" class="social-link">
+            <span class="social-icon">▶</span> YOUTUBE
+          </a>
+          <a href="#" class="social-link">
+            <span class="social-icon">▶</span> RUMBLE
+          </a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-photo">
+          <img src="images/gary-cardone.jpg" alt="Gary Cardone" onerror="this.style.display='none'">
+          <div class="photo-placeholder">
+            <div class="photo-iam-bg">I AM</div>
+          </div>
+        </div>
+        <div class="countdown-box">
+          <div class="countdown-label">NEXT LIVESTREAM</div>
+          <div class="countdown-day">SUNDAY</div>
+          <div class="countdown-time">10:30 AM ET</div>
+          <div class="countdown-timer">
+            <div class="timer-unit">
+              <span class="timer-num" id="days">02</span>
+              <span class="timer-label">DAYS</span>
+            </div>
+            <div class="timer-unit">
+              <span class="timer-num" id="hours">10</span>
+              <span class="timer-label">HRS</span>
+            </div>
+            <div class="timer-unit">
+              <span class="timer-num" id="minutes">47</span>
+              <span class="timer-label">MINS</span>
+            </div>
+            <div class="timer-unit">
+              <span class="timer-num" id="seconds">32</span>
+              <span class="timer-label">SECS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-quote-bar">
+      <span class="quote-mark-open">&ldquo;</span>
+      <span class="hero-quote-text" id="heroQuoteText">The mind is the most powerful asset you will ever own.</span>
+      <div class="quote-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <span class="quote-mark-close">&rdquo;</span>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 5C16.2 5 5 16.2 5 30s11.2 25 25 25 25-11.2 25-25S43.8 5 30 5zm0 6c5.5 0 10.5 2.1 14.2 5.5L11.5 44.2C8.1 40.5 6 35.5 6 30c0-13.2 10.8-24 24-24zm0 42c-5.5 0-10.5-2.1-14.2-5.5l32.7-32.7C51.9 19.5 54 24.5 54 30c0 13.2-10.8 24-24 24z" fill="currentColor"/>
+          <circle cx="22" cy="22" r="4" fill="currentColor"/>
+          <circle cx="38" cy="22" r="4" fill="currentColor"/>
+          <path d="M20 35c2 4 18 4 20 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M15 28c0-8.3 6.7-15 15-15s15 6.7 15 15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M10 32c0-11 9-20 20-20s20 9 20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <h3 class="pillar-title">MINDSET</h3>
+      <p class="pillar-desc">Reprogram your thinking<br>and master your reality.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="50%" y="72%" text-anchor="middle" font-size="42" fill="currentColor" font-family="serif" font-weight="bold">₿</text>
+        </svg>
+      </div>
+      <h3 class="pillar-title">BITCOIN</h3>
+      <p class="pillar-desc">Understand the future<br>and own your freedom.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M33 5L15 33h15L27 55l18-28H30L33 5z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3 class="pillar-title">ENERGY</h3>
+      <p class="pillar-desc">Elevate your energy<br>and lead your life.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="44" width="8" height="10" rx="1" fill="currentColor"/>
+          <rect x="20" y="34" width="8" height="20" rx="1" fill="currentColor"/>
+          <rect x="32" y="24" width="8" height="30" rx="1" fill="currentColor"/>
+          <rect x="44" y="14" width="8" height="40" rx="1" fill="currentColor"/>
+          <path d="M8 38L24 26l14 8 14-18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="52" cy="16" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3 class="pillar-title">WEALTH</h3>
+      <p class="pillar-desc">Build wealth, create impact,<br>and leave a legacy.</p>
+    </div>
+  </section>
+
+  <!-- SESSIONS -->
+  <section class="sessions" id="sessions">
+    <div class="section-header">
+      <div class="section-left">
+        <span class="section-label">LATEST TEACHINGS</span>
+        <h2 class="section-title-large">I AM SESSIONS</h2>
+      </div>
+      <a href="#" class="view-all">VIEW ALL SESSIONS &rsaquo;</a>
+    </div>
+    <div class="sessions-grid">
+      <div class="session-card">
+        <div class="session-thumb" style="background: linear-gradient(135deg, #1a1200 0%, #0d0d0d 100%);">
+          <div class="thumb-overlay">
+            <span class="play-btn">▶</span>
+          </div>
+          <span class="session-duration">1:02:45</span>
+          <div class="thumb-img thumb-1"></div>
+        </div>
+        <div class="session-info">
+          <span class="session-date">MAY 12, 2024</span>
+          <h3 class="session-title">Discipline Is Your Freedom</h3>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-thumb" style="background: linear-gradient(135deg, #1a0f00 0%, #0d0d0d 100%);">
+          <div class="thumb-overlay">
+            <span class="play-btn">▶</span>
+          </div>
+          <span class="session-duration">58:17</span>
+          <div class="thumb-img thumb-2"></div>
+        </div>
+        <div class="session-info">
+          <span class="session-date">MAY 5, 2024</span>
+          <h3 class="session-title">The Bitcoin Standard</h3>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-thumb" style="background: linear-gradient(135deg, #0a0a1a 0%, #0d0d0d 100%);">
+          <div class="thumb-overlay">
+            <span class="play-btn">▶</span>
+          </div>
+          <span class="session-duration">54:33</span>
+          <div class="thumb-img thumb-3"></div>
+        </div>
+        <div class="session-info">
+          <span class="session-date">APR 28, 2024</span>
+          <h3 class="session-title">Reset Your Environment</h3>
+        </div>
+      </div>
+      <div class="session-card">
+        <div class="session-thumb" style="background: linear-gradient(135deg, #150d00 0%, #0d0d0d 100%);">
+          <div class="thumb-overlay">
+            <span class="play-btn">▶</span>
+          </div>
+          <span class="session-duration">1:05:21</span>
+          <div class="thumb-img thumb-4"></div>
+        </div>
+        <div class="session-info">
+          <span class="session-date">APR 21, 2024</span>
+          <h3 class="session-title">Wealth Is A Responsibility</h3>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-next" aria-label="Next sessions">&rsaquo;</button>
+  </section>
+
+  <!-- PAINTINGS -->
+  <section class="paintings" id="art">
+    <div class="paintings-inner">
+      <div class="paintings-left">
+        <span class="section-label">GARY'S</span>
+        <h2 class="section-title-script">Paintings</h2>
+        <p class="paintings-desc">Visual expressions of the unseen. Each piece is a reflection of mindset, energy, and the infinite within.</p>
+        <a href="#" class="btn-outline">VIEW FULL GALLERY</a>
+      </div>
+      <div class="paintings-right">
+        <div class="paintings-grid">
+          <div class="painting-item painting-large paint-1"></div>
+          <div class="painting-item paint-2"></div>
+          <div class="painting-item paint-3"></div>
+          <div class="painting-item paint-4"></div>
+          <div class="painting-item paint-5"></div>
+        </div>
+        <a href="#" class="explore-link">EXPLORE ALL PAINTINGS &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE SECTION -->
+  <section class="quote-section">
+    <div class="quote-content">
+      <span class="big-quote-open">&ldquo;</span>
+      <blockquote class="main-quote" id="mainQuote">
+        The mind is the most powerful asset you will ever own.
+      </blockquote>
+      <span class="big-quote-close">&rdquo;</span>
+      <div class="quote-signature">Gary Cardone</div>
+      <div class="quote-actions">
+        <button class="btn-share">𝕏 SHARE ON X</button>
+        <button class="btn-next-quote" id="nextQuoteBtn">NEXT QUOTE &rarr;</button>
+      </div>
+      <div class="quote-dots-row">
+        <span class="dot active" data-idx="0"></span>
+        <span class="dot" data-idx="1"></span>
+        <span class="dot" data-idx="2"></span>
+        <span class="dot" data-idx="3"></span>
+        <span class="dot" data-idx="4"></span>
+        <span class="dot" data-idx="5"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="writing" id="writing">
+    <div class="writing-left">
+      <span class="section-label">GARY'S</span>
+      <h2 class="section-title-script">Writing</h2>
+      <p class="writing-desc">Ideas, frameworks, and raw truths from the journey.</p>
+      <a href="#" class="view-all-link">VIEW ALL WRITING &rarr;</a>
+    </div>
+    <div class="writing-cards">
+      <div class="writing-card">
+        <div class="writing-thumb write-1"></div>
+        <div class="writing-body">
+          <span class="writing-date">MAY 10, 2024</span>
+          <h3 class="writing-title">Discipline Is Your Freedom</h3>
+          <p class="writing-excerpt">Freedom doesn't come from doing what you want. It comes from mastering what you don't.</p>
+          <a href="#" class="read-link">Read on Substack ↗</a>
+        </div>
+      </div>
+      <div class="writing-card">
+        <div class="writing-thumb write-2"></div>
+        <div class="writing-body">
+          <span class="writing-date">MAY 5, 2024</span>
+          <h3 class="writing-title">The Bitcoin Standard</h3>
+          <p class="writing-excerpt">Understand money, understand power. Bitcoin is the greatest transfer of wealth in history.</p>
+          <a href="#" class="read-link">Read on Substack ↗</a>
+        </div>
+      </div>
+      <div class="writing-card">
+        <div class="writing-thumb write-3"></div>
+        <div class="writing-body">
+          <span class="writing-date">APR 28, 2024</span>
+          <h3 class="writing-title">Reset Your Environment</h3>
+          <p class="writing-excerpt">Your environment is either building you or breaking you. Choose it intentionally.</p>
+          <a href="#" class="read-link">Read on Substack ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="journal-section" id="reset">
+    <div class="journal-book">
+      <div class="journal-cover">
+        <span class="journal-cover-iam">I AM</span>
+        <span class="journal-cover-sub">A DAILY PRACTICE</span>
+      </div>
+    </div>
+    <div class="journal-right">
+      <span class="section-label">A DAILY PRACTICE</span>
+      <h2 class="section-title-script">Journal</h2>
+      <p class="journal-desc">Clarity. Focus. Alignment.<br>One entry a day changes everything.</p>
+      <div class="journal-cta">
+        <p class="journal-cta-text">Get the Journal. Build the practice.</p>
+        <div class="journal-form">
+          <input type="email" placeholder="Enter your email address" class="journal-input">
+          <button class="btn-journal">GET THE JOURNAL</button>
+        </div>
+        <p class="journal-readers">Join 150,000+ readers. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-photo">
+      <img src="images/gary-cardone.jpg" alt="Gary Cardone" onerror="this.parentElement.classList.add('no-img')">
+      <div class="about-photo-placeholder"></div>
+    </div>
+    <div class="about-content">
+      <span class="section-label">WHO IS</span>
+      <h2 class="about-title">Gary Cardone?</h2>
+      <p class="about-bio">Entrepreneur. Investor. Author. Artist. Seeker.<br>A student of life committed to truth, freedom, and the limitless potential within us all.</p>
+      <a href="#" class="btn-outline">LEARN MORE ABOUT GARY &rarr;</a>
+      <div class="about-achievements">
+        <div class="achievement">
+          <div class="achievement-icon">🏢</div>
+          <p>Built and exited multiple companies across real estate, media, and finance.</p>
+        </div>
+        <div class="achievement">
+          <div class="achievement-icon">📚</div>
+          <p>Best-selling author and creator of <em>The 10X Rule</em>.</p>
+        </div>
+        <div class="achievement">
+          <div class="achievement-icon">🎨</div>
+          <p>Collects art that speaks to the soul and expands consciousness.</p>
+        </div>
+        <div class="achievement">
+          <div class="achievement-icon">🌟</div>
+          <p>Dedicated to raising awareness and helping humanity evolve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASK GARY -->
+  <section class="ask-gary" id="ask">
+    <div class="ask-inner">
+      <h2 class="ask-title">Ask Gary Anything</h2>
+      <p class="ask-desc">Submit your question and get a real answer.</p>
+      <form class="ask-form">
+        <input type="text" placeholder="Your name" class="ask-input">
+        <input type="email" placeholder="Your email" class="ask-input">
+        <textarea placeholder="Your question..." class="ask-textarea" rows="4"></textarea>
+        <button type="submit" class="btn-primary btn-full">SUBMIT YOUR QUESTION</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <span class="logo-iam">I AM</span>
+      <span class="logo-sub">with Gary Cardone</span>
+    </div>
+    <div class="footer-links">
+      <a href="#sessions">Sessions</a>
+      <a href="#art">Art</a>
+      <a href="#writing">Writing</a>
+      <a href="#about">About</a>
+      <a href="#ask">Ask Gary</a>
+    </div>
+    <div class="footer-socials">
+      <a href="#" class="social-link">𝕏</a>
+      <a href="#" class="social-link">▶</a>
+    </div>
+    <div class="footer-legal">
+      <p>&copy; 2024 Gary Cardone. All rights reserved.</p>
+      <div class="footer-legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
