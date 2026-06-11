@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Say Something Machine - Mike Mac</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Georgia', serif; }
+        .title-font { font-family: 'Oswald', sans-serif; }
+        .card { background: #16161a; border: 1px solid #2c2c33; border-left: 4px solid #c9a23f; }
+        .btn-red { background: #b3261e; transition: all 0.2s; }
+        .btn-red:hover { background: #8f1c16; }
+        .btn-red:disabled { background: #5a1510; cursor: not-allowed; opacity: 0.7; }
+        .accent-gold { color: #c9a23f; }
+
+        .output-section {
+            background: #16161a;
+            border: 1px solid #2c2c33;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .output-header {
+            background: #1e1e24;
+            border-bottom: 1px solid #2c2c33;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .output-body {
+            padding: 1.25rem;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #e8e6e1;
+            font-size: 0.92rem;
+        }
+        .copy-btn {
+            background: #2c2c33;
+            border: 1px solid #3c3c44;
+            color: #c9a23f;
+            padding: 0.3rem 0.85rem;
+            border-radius: 0.5rem;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .copy-btn:hover { background: #3c3c44; }
+        .copy-btn.copied { background: #c9a23f; color: #0d0d10; }
+
+        .tab-active {
+            border-bottom: 4px solid #c9a23f !important;
+            color: #c9a23f !important;
+        }
+        .tab-btn {
+            border-bottom: 4px solid transparent;
+            color: #888;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { color: #c9a23f88; }
+
+        .history-item {
+            background: #16161a;
+            border: 1px solid #2c2c33;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .history-item:hover { border-color: #c9a23f; }
+
+        @keyframes pulse-dots {
+            0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+            40% { opacity: 1; transform: scale(1); }
+        }
+        .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #c9a23f; margin: 0 2px; animation: pulse-dots 1.4s infinite ease-in-out; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body class="bg-[#0d0d10] text-[#e8e6e1] min-h-screen pb-16">
+<div class="max-w-4xl mx-auto p-6">
+
+    <!-- HEADER -->
+    <div class="border-b border-[#2c2c33] pb-8 mb-8 text-center">
+        <div class="title-font text-5xl font-bold tracking-wider uppercase">
+            Say Something <span class="text-[#b3261e]">Machine</span>
+        </div>
+        <div class="text-center accent-gold text-sm mt-2 italic">
+            Topic in. Truth out. — Mike Mac's content engine
+        </div>
+    </div>
+
+    <!-- API KEY -->
+    <div class="mb-8 bg-[#16161a] border border-[#2c2c33] p-6 rounded-3xl">
+        <label class="block text-xs uppercase tracking-widest mb-3 accent-gold">Anthropic API Key (stays in browser)</label>
+        <input id="apiKey" type="password"
+               class="w-full bg-[#0d0d10] border border-[#2c2c33] rounded-2xl px-6 py-4 text-lg focus:outline-none focus:border-[#c9a23f]"
+               placeholder="sk-ant-...">
+        <p class="text-xs text-gray-500 mt-3">Only used for this session. Never stored or shared.</p>
+    </div>
+
+    <!-- MODE TABS -->
+    <div class="flex gap-0 mb-8 border-b border-[#2c2c33]">
+        <button onclick="switchMode('daily')" id="dailyTab"
+                class="tab-btn tab-active flex-1 py-4 px-6 title-font uppercase tracking-widest text-sm">
+            📰 Daily Package
+        </button>
+        <button onclick="switchMode('sermon')" id="sermonTab"
+                class="tab-btn flex-1 py-4 px-6 title-font uppercase tracking-widest text-sm">
+            ✝️ Say Something Holy
+        </button>
+    </div>
+
+    <!-- INPUT -->
+    <div class="card p-8 rounded-3xl mb-10">
+        <label class="block text-xs uppercase tracking-widest mb-3 accent-gold" id="inputLabel">What's the topic today?</label>
+        <textarea id="topicInput" rows="4"
+                  class="w-full bg-[#0d0d10] border border-[#2c2c33] rounded-2xl p-6 text-lg resize-y min-h-[120px] focus:outline-none focus:border-[#c9a23f]"
+                  placeholder='e.g. "Iran strikes and Bible prophecy" or "Why closed doors are protection"'></textarea>
+        <p class="text-xs text-gray-500 mt-3">Tip: Ctrl+Enter to generate</p>
+
+        <button onclick="generateContent()" id="generateBtn"
+                class="mt-8 btn-red text-white px-12 py-6 rounded-2xl title-font uppercase tracking-widest text-xl font-bold w-full">
+            GENERATE NOW
+        </button>
+    </div>
+
+    <!-- STATUS -->
+    <div id="status" class="hidden text-center py-6 accent-gold text-lg">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span id="statusText" class="ml-3"></span>
+    </div>
+
+    <!-- ERROR -->
+    <div id="errorBox" class="hidden bg-[#2a0f0f] border border-[#5a1510] text-[#f87171] p-5 rounded-2xl mb-6 text-sm"></div>
+
+    <!-- OUTPUT -->
+    <div id="output" class="space-y-6"></div>
+
+    <!-- HISTORY -->
+    <div class="mt-16 pt-8 border-t border-[#2c2c33]">
+        <div class="title-font uppercase tracking-widest text-sm accent-gold mb-6">Recent Generations</div>
+        <div id="history" class="space-y-4"></div>
+    </div>
+
+</div>
+
+<script>
+// ── Voice Profile ──────────────────────────────────────────────────────────────
+const VOICE_PROFILE = `You are writing AS Mike Mac — a bold, prophetic, street-smart Christian content creator.
+
+VOICE CHARACTERISTICS:
+- Preaches with fire and urgency — every word has weight, zero filler
+- Speaks directly to real people in real pain: the overlooked, the broken, the doubting
+- Blends street-smart realism with deep Biblical truth
+- Short punchy sentences. Power through brevity.
+- Prophetic declarations mixed with practical, actionable truth
+- Confrontational but dripping with love — calls out AND calls forward
+- References current events, news, culture through a Biblical lens
+- Draws from personal testimony — overcomer who has been through real struggle
+- Plain, direct language — sometimes raw — but ALWAYS scripture-rooted
+- Never churchy-sounding. Real people talk. Real situations. Real God.
+- Signature moves: rhetorical questions, repetition for emphasis, sudden pivots from heavy to hopeful, bold declarations
+- Every piece ends with a clear call: follow, share, pray, decide, move
+
+AVOID: Seminary-speak, passive voice, long winding sentences, vague spirituality, hollow religious clichés`;
+
+// ── State ──────────────────────────────────────────────────────────────────────
+let currentMode = 'daily';
+let history = [];
+try { history = JSON.parse(localStorage.getItem('ssm-history') || '[]'); } catch(e) {}
+
+// ── UI Helpers ─────────────────────────────────────────────────────────────────
+function switchMode(mode) {
+    currentMode = mode;
+    const daily = document.getElementById('dailyTab');
+    const sermon = document.getElementById('sermonTab');
+    if (mode === 'daily') {
+        daily.classList.add('tab-active');
+        sermon.classList.remove('tab-active');
+        document.getElementById('inputLabel').textContent = "What's the topic today?";
+        document.getElementById('topicInput').placeholder = 'e.g. "Iran strikes and Bible prophecy" or "Why closed doors are protection"';
+    } else {
+        sermon.classList.add('tab-active');
+        daily.classList.remove('tab-active');
+        document.getElementById('inputLabel').textContent = "What's this sermon about?";
+        document.getElementById('topicInput').placeholder = 'e.g. "The cost of disobedience" or "When God says wait" or "Psalm 23 — The Shepherd\'s care"';
+    }
+    document.getElementById('output').innerHTML = '';
+    setError('');
+    hideStatus();
+}
+
+function setStatus(msg) {
+    document.getElementById('statusText').textContent = msg;
+    document.getElementById('status').classList.remove('hidden');
+}
+
+function hideStatus() {
+    document.getElementById('status').classList.add('hidden');
+}
+
+function setError(msg) {
+    const el = document.getElementById('errorBox');
+    if (msg) { el.textContent = msg; el.classList.remove('hidden'); }
+    else { el.classList.add('hidden'); }
+}
+
+function copyToClipboard(text, btnId) {
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        const orig = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+}
+
+function outputSection(icon, label, content, copyId) {
+    const safe = content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `
+    <div class="output-section">
+        <div class="output-header">
+            <span class="title-font uppercase tracking-widest text-xs accent-gold">${icon} ${label}</span>
+            <button class="copy-btn" id="${copyId}" onclick="copyToClipboard(${JSON.stringify(content)}, '${copyId}')">Copy</button>
+        </div>
+        <div class="output-body">${safe}</div>
+    </div>`;
+}
+
+// ── API ────────────────────────────────────────────────────────────────────────
+async function callClaude(systemPrompt, userPrompt) {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    if (!apiKey) throw new Error('Enter your Anthropic API key above first.');
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+            model: 'claude-opus-4-8',
+            max_tokens: 4096,
+            system: systemPrompt,
+            messages: [{ role: 'user', content: userPrompt }]
+        })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.content?.[0]?.text || '';
+}
+
+function parseJSON(raw) {
+    try { return JSON.parse(raw.trim()); } catch(e) {}
+    try { const m = raw.match(/[\[{][\s\S]*[\]}]/); if (m) return JSON.parse(m[0]); } catch(e) {}
+    throw new Error('Could not parse the response. Try again.');
+}
+
+// ── Daily Package ──────────────────────────────────────────────────────────────
+async function generateDailyPackage(topic) {
+    setStatus('Building your daily package…');
+
+    const sys = VOICE_PROFILE + `
+
+OUTPUT: Return ONLY a valid JSON object — no markdown, no fences, no commentary.
+
+{
+  "keyVerse": "The single most relevant Bible verse. Format: Book Chapter:Verse — \\"Full verse text\\"",
+  "hook": "The video hook — the first 2-3 sentences spoken on camera. Must grab in under 5 seconds. Bold, direct, problem-aware.",
+  "shortScript": "Complete 60-75 second short-form script in Mike Mac's voice. Include [PAUSE], [LOOK TO CAMERA] stage directions sparingly. End with strong CTA to follow or share.",
+  "tweetThread": "5-tweet thread. Format exactly:\\n1/ ...\\n2/ ...\\n3/ ...\\n4/ ...\\n5/ [CTA tweet — follow, retweet, reply]",
+  "instagramCaption": "150-200 word IG caption. 3-4 hard-hitting paragraphs in Mike's voice. Strong CTA in last line. Then on a new line: 15-20 relevant hashtags.",
+  "youtubeDescription": "YouTube Shorts description — 3-4 compelling sentences. Summarize the core truth. Include a scripture reference. End with subscribe CTA."
+}`;
+
+    const raw = await callClaude(sys, `Topic: ${topic}\n\nGenerate the complete daily content package. Return only the JSON object.`);
+    return parseJSON(raw);
+}
+
+function renderDailyPackage(data, topic) {
+    const ts = Date.now();
+    const html = [];
+    if (data.keyVerse)          html.push(outputSection('📖', 'Key Verse', data.keyVerse, `verse-${ts}`));
+    if (data.hook)               html.push(outputSection('🎣', 'Video Hook — First 5 Seconds', data.hook, `hook-${ts}`));
+    if (data.shortScript)        html.push(outputSection('🎥', 'Short-Form Script (60-75 sec)', data.shortScript, `script-${ts}`));
+    if (data.tweetThread)        html.push(outputSection('🐦', 'Tweet Thread', data.tweetThread, `tweet-${ts}`));
+    if (data.instagramCaption)   html.push(outputSection('📸', 'Instagram Caption + Hashtags', data.instagramCaption, `ig-${ts}`));
+    if (data.youtubeDescription) html.push(outputSection('▶️', 'YouTube Description', data.youtubeDescription, `yt-${ts}`));
+    return html.join('');
+}
+
+// ── Sermon ─────────────────────────────────────────────────────────────────────
+async function generateSermon(topic) {
+    setStatus('Writing your sermon…');
+
+    const sys = VOICE_PROFILE + `
+
+OUTPUT: Return ONLY a valid JSON object — no markdown, no fences, no commentary.
+
+{
+  "title": "Sermon title — bold, memorable, 4-8 words",
+  "mainText": "Primary scripture passage, e.g. \\"John 11:35-44\\"",
+  "keyTheme": "One sentence: the central truth this sermon nails down",
+  "openingHook": "The first 90-120 seconds spoken — a story, question, or bold declaration that grabs the room. Written out in full in Mike Mac's voice. No stage directions needed.",
+  "points": [
+    {
+      "number": 1,
+      "title": "Point title — punchy, declarative",
+      "scripture": "Supporting verse — Book Chapter:Verse",
+      "content": "2-3 meaty paragraphs unpacking this point. Include a real-world illustration or analogy. Mike's voice throughout.",
+      "takeaway": "The one sentence this congregation carries home from this point"
+    },
+    { "number": 2, "title": "...", "scripture": "...", "content": "...", "takeaway": "..." },
+    { "number": 3, "title": "...", "scripture": "...", "content": "...", "takeaway": "..." }
+  ],
+  "illustration": "One powerful story or illustration (real or vivid hypothetical) that ties all 3 points together. 2-3 paragraphs.",
+  "altarCall": "The full closing altar call — written out in Mike's voice. Emotionally honest, welcoming, specific about the next step. 3 paragraphs."
+}`;
+
+    const raw = await callClaude(sys, `Sermon topic: ${topic}\n\nGenerate the complete sermon. Return only the JSON object.`);
+    return parseJSON(raw);
+}
+
+function renderSermon(data, topic) {
+    const ts = Date.now();
+    const html = [];
+
+    if (data.title || data.mainText) {
+        const header = [data.title, data.mainText && `📖 ${data.mainText}`, data.keyTheme && `Theme: ${data.keyTheme}`].filter(Boolean).join('\n\n');
+        html.push(outputSection('✝️', 'Sermon', header, `title-${ts}`));
+    }
+
+    if (data.openingHook) {
+        html.push(outputSection('🎤', 'Opening Hook (First 90 Seconds)', data.openingHook, `opening-${ts}`));
+    }
+
+    if (Array.isArray(data.points)) {
+        data.points.forEach((pt, i) => {
+            const body = [`📖 ${pt.scripture || ''}`, '', pt.content || '', '', `→ TAKEAWAY: ${pt.takeaway || ''}`].join('\n');
+            html.push(outputSection(`${pt.number || i+1}.`, `Point ${pt.number || i+1}: ${pt.title || ''}`, body, `pt${i+1}-${ts}`));
+        });
+    }
+
+    if (data.illustration) {
+        html.push(outputSection('💡', 'Illustration / Story', data.illustration, `illus-${ts}`));
+    }
+
+    if (data.altarCall) {
+        html.push(outputSection('🙏', 'Altar Call', data.altarCall, `altar-${ts}`));
+    }
+
+    return html.join('');
+}
+
+// ── Main ───────────────────────────────────────────────────────────────────────
+async function generateContent() {
+    const topic = document.getElementById('topicInput').value.trim();
+    const btn = document.getElementById('generateBtn');
+
+    setError('');
+    if (!topic) { setError('Enter a topic first.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'GENERATING…';
+    document.getElementById('output').innerHTML = '';
+
+    try {
+        let data, html;
+        if (currentMode === 'daily') {
+            data = await generateDailyPackage(topic);
+            html = renderDailyPackage(data, topic);
+        } else {
+            data = await generateSermon(topic);
+            html = renderSermon(data, topic);
+        }
+
+        hideStatus();
+        document.getElementById('output').innerHTML = html;
+        saveToHistory(topic, currentMode, data);
+        renderHistory();
+        document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+        hideStatus();
+        setError('⚠️ ' + (err.message || 'Something went wrong. Check your API key and try again.'));
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'GENERATE NOW';
+}
+
+// ── History ────────────────────────────────────────────────────────────────────
+function saveToHistory(topic, mode, data) {
+    history.unshift({ topic, mode, data, date: new Date().toISOString() });
+    if (history.length > 25) history.length = 25;
+    try { localStorage.setItem('ssm-history', JSON.stringify(history)); } catch(e) {}
+}
+
+function renderHistory() {
+    const el = document.getElementById('history');
+    if (!history.length) {
+        el.innerHTML = '<p class="text-gray-600 text-sm italic">No generations yet.</p>';
+        return;
+    }
+    el.innerHTML = history.slice(0, 10).map((item, i) => `
+        <div class="history-item" onclick="loadHistoryItem(${i})">
+            <div class="flex justify-between items-start gap-3">
+                <div>
+                    <span class="title-font uppercase tracking-widest text-xs accent-gold">${item.mode === 'daily' ? '📰 Daily' : '✝️ Sermon'}</span>
+                    <p class="mt-1 text-sm font-semibold leading-snug">${item.topic}</p>
+                </div>
+                <span class="text-xs text-gray-500 whitespace-nowrap mt-1">${new Date(item.date).toLocaleDateString()}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function loadHistoryItem(index) {
+    const item = history[index];
+    if (!item) return;
+    document.getElementById('topicInput').value = item.topic;
+    switchMode(item.mode);
+    const html = item.mode === 'daily' ? renderDailyPackage(item.data, item.topic) : renderSermon(item.data, item.topic);
+    document.getElementById('output').innerHTML = html;
+    document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+renderHistory();
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.ctrlKey) generateContent(); });
+</script>
+</body>
+</html>
